@@ -6,6 +6,8 @@ import (
 	"strconv"
 )
 
+var InitialPos = "rhbkqbhrpppppppp88888PPPPPPPP-0-0-"
+
 var Pieces = map[string]int8{
 	// Map with all the CR7 equivalences, lowercase refers to black pieces, uppercase to white ones
 	"P": 1,
@@ -24,6 +26,8 @@ var Pieces = map[string]int8{
 
 var invPieces = invMap(Pieces)
 
+var SeedLength = 4
+
 func invMap(m map[string]int8) map[int8]string {
 	var reversedMap map[int8]string
 
@@ -34,33 +38,44 @@ func invMap(m map[string]int8) map[int8]string {
 	return reversedMap
 }
 
-func CR7ToArray(cr string) ([64]int8, error) {
+func CR7ToArray(cr string) ([64]int8, [2]byte, string, error) {
 
 	// TODO: Añadir tabla de contexto
 
 	var board [64]int8
+	var castling [2]byte
 
 	offset := 0
 
 	for index, rune := range cr {
+
+		if index >= len(cr)-SeedLength {
+			break
+		}
+
 		char := string(rune)
 
 		if num, err := strconv.Atoi(char); err == nil {
+			if index >= len(cr)-1+SeedLength {
+				castling[len(cr)-index+SeedLength] = byte(num)
+			}
 			offset += num - 1
 			continue
 		}
 
 		if Pieces[char] == 0 {
-			return [64]int8{}, errors.New("Invalid CR7 code")
+			return [64]int8{}, [2]byte{}, "", errors.New("Invalid CR7 code")
 		}
 
 		board[index] = Pieces[char]
 	}
 
-	return board, nil
+	seed := cr[len(cr)-SeedLength:]
+
+	return board, castling, seed, nil
 }
 
-func ArrayToCR7(board [64]int8) (string, error) {
+func ArrayToCR7(board [64]int8, castling [2]byte, seed string) (string, error) {
 
 	CR7string := ""
 
@@ -82,6 +97,17 @@ func ArrayToCR7(board [64]int8) (string, error) {
 
 		CR7string += invPieces[value]
 	}
+
+	for _, castle := range castling {
+
+		if string(castle) != "0" && string(castle) != "1" {
+			return "", errors.New("Bad castling table")
+		}
+
+		CR7string += string(castle)
+	}
+
+	CR7string += seed
 
 	return CR7string, nil
 }
