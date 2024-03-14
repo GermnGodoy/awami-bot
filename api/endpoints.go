@@ -8,7 +8,7 @@ import (
 
 type posResponse struct {
 	PrevPosition string `json:"prevPosition"`
-	MovePosition string `json: movePosition`
+	MovePosition string `json:"movePosition"`
 }
 
 func createEndpoints(e *echo.Echo) {
