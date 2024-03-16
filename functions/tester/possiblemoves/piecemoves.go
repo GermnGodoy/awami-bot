@@ -1,52 +1,17 @@
 package possiblemoves
 
 func castling(board [64]int8, enroques [4]uint8, listofmovesptr **node) {
-	var movlegal move
-	movlegal.start = 60
-
+	
 	// Enroque corto
-	if enroques[0] == 1 {
-		if board[61] == 0 && board[62] == 0 {
-			movlegal.start = 60
-			movlegal.finish = 60
-			if ischeck(movlegal, board) == 1 {
-				movlegal.finish = 61
-				if ischeck(movlegal, board) == 1 {
-					movlegal.finish = 62
-					if ischeck(movlegal, board) == 1 {
-						movlegal.finish = 63
-						if ischeck(movlegal, board) == 1 {
-							movlegal.finish = -3
-							push(movlegal, listofmovesptr)
-						}
-					}
-				}
-			}
-		}
+	if (enroques[0] == 1 && board[61] == 0 && board[62] == 0 && ischeck(move{60, 60}, board) == 1 &&
+		ischeck(move{60, 61}, board) == 1 && ischeck(move{60, 62}, board) == 1) {
+		push(move{60, -3}, listofmovesptr)
 	}
 
 	// Enroque largo
-	if enroques[1] == 1 {
-		if board[59] == 0 && board[58] == 0 && board[57] == 0 {
-			movlegal.start = 60
-			movlegal.finish = 60
-			if ischeck(movlegal, board) == 1 {
-				movlegal.finish = 59
-				if ischeck(movlegal, board) == 1 {
-					movlegal.finish = 58
-					if ischeck(movlegal, board) == 1 {
-						movlegal.finish = 57
-						if ischeck(movlegal, board) == 1 {
-							movlegal.finish = 56
-							if ischeck(movlegal, board) == 1 {
-								movlegal.finish = -4
-								push(movlegal, listofmovesptr)
-							}
-						}
-					}
-				}
-			}
-		}
+	if (enroques[1] == 1 && board[59] == 0 && board[58] == 0 && board[57] == 0 && ischeck(move{60, 60}, board) == 1 &&
+		ischeck(move{60, 59}, board) == 1 && ischeck(move{60, 58}, board) == 1 && ischeck(move{60, 57}, board) == 1) {
+		push(move{60, -4}, listofmovesptr)
 	}
 }
 func kingmoves(i int8, board [64]int8, listofmovesptr **node) {
