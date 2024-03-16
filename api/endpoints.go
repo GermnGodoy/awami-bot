@@ -30,6 +30,8 @@ func createEndpoints(e *echo.Echo) {
 	randomBoy.GET("/:pos", func(c echo.Context) error {
 		pos := c.Param("pos")
 
+		// HERE I DO THINGS
+
 		res := &posResponse{
 			PrevPosition: pos,
 			MovePosition: "1245jfdjalfjkfds",
