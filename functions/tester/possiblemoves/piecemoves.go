@@ -1,7 +1,11 @@
 package possiblemoves
 
 func castling(board [64]int8, enroques [4]uint8, listofmovesptr **node) {
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 6ebcd16f46d9e8c77c43c37b68bdf2f008b9d0f4
 	// Enroque corto
 	if (enroques[0] == 1 && board[61] == 0 && board[62] == 0 && ischeck(move{60, 60}, board) == 1 &&
 		ischeck(move{60, 61}, board) == 1 && ischeck(move{60, 62}, board) == 1) {
