@@ -15,7 +15,6 @@ type node struct {
 //pointer to the linked list
 
 func Printpossiblemoves(board [64]int8, enpassant int8, possiblecastles [4]uint8) {
-
 	var listofmoves *node = nil
 
 	//chequeamos primero posibles ernoques.
@@ -48,7 +47,7 @@ func Printpossiblemoves(board [64]int8, enpassant int8, possiblecastles [4]uint8
 		// Caso rey.
 		case 20:
 			kingmoves(i, board, &listofmoves)
-		//El enroque se hace a aparte (al principio).
+			//El enroque se hace a aparte (al principio).
 		default:
 		}
 		i++
@@ -56,6 +55,12 @@ func Printpossiblemoves(board [64]int8, enpassant int8, possiblecastles [4]uint8
 
 	// ahora imprimimos los mivimientos obtenidos
 	ptr := listofmoves
+
+	if ptr == nil {
+		fmt.Printf("No legal moves.")
+		return
+	}
+
 	for ptr.next != nil {
 		fmt.Printf("[%d, %d]\n", ptr.move.start, ptr.move.finish)
 		ptr = ptr.next

@@ -119,13 +119,13 @@ func horsemoves(i int8, board [64]int8, listofmovesptr **node) {
 	var movlegal move
 	movlegal.start = i
 	if i > 15 {
-		if board[i-15] <= 0 && i%8 != 7 {
+		if i%8 != 7 && board[i-15] <= 0 {
 			movlegal.finish = i - 15
 			if ischeck(movlegal, board) == 1 {
 				push(movlegal, listofmovesptr)
 			}
 		}
-		if board[i-17] <= 0 && i%8 != 0 {
+		if i%8 != 0 && board[i-17] <= 0 {
 			movlegal.finish = i - 17
 			if ischeck(movlegal, board) == 1 {
 				push(movlegal, listofmovesptr)
@@ -133,13 +133,13 @@ func horsemoves(i int8, board [64]int8, listofmovesptr **node) {
 		}
 	}
 	if i > 7 {
-		if board[i-6] <= 0 && i%8 < 6 {
+		if i%8 < 6 && board[i-6] <= 0 {
 			movlegal.finish = i - 6
 			if ischeck(movlegal, board) == 1 {
 				push(movlegal, listofmovesptr)
 			}
 		}
-		if board[i-10] <= 0 && i%8 > 1 {
+		if i%8 > 1 && board[i-10] <= 0 {
 			movlegal.finish = i - 10
 			if ischeck(movlegal, board) == 1 {
 				push(movlegal, listofmovesptr)
@@ -147,13 +147,13 @@ func horsemoves(i int8, board [64]int8, listofmovesptr **node) {
 		}
 	}
 	if i < 48 {
-		if board[i+15] <= 0 && i%8 != 0 {
+		if i%8 != 0 && board[i+15] <= 0 {
 			movlegal.finish = i + 15
 			if ischeck(movlegal, board) == 1 {
 				push(movlegal, listofmovesptr)
 			}
 		}
-		if board[i+17] <= 0 && i%8 != 7 {
+		if i%8 != 7 && board[i+17] <= 0 {
 			movlegal.finish = i + 17
 			if ischeck(movlegal, board) == 1 {
 				push(movlegal, listofmovesptr)
@@ -161,13 +161,13 @@ func horsemoves(i int8, board [64]int8, listofmovesptr **node) {
 		}
 	}
 	if i < 56 {
-		if board[i+6] <= 0 && i%8 > 1 {
+		if i%8 > 1 && board[i+6] <= 0 {
 			movlegal.finish = i + 6
 			if ischeck(movlegal, board) == 1 {
 				push(movlegal, listofmovesptr)
 			}
 		}
-		if board[i+10] <= 0 && i%8 < 6 {
+		if i%8 < 6 && board[i+10] <= 0 {
 			movlegal.finish = i + 10
 			if ischeck(movlegal, board) == 1 {
 				push(movlegal, listofmovesptr)
