@@ -1,11 +1,16 @@
 package possiblemoves
 
+import "errors"
+
 //La funcion ischeck determina si el rey esta en jaque tras un movimiento.
 //Se asume que el input es un movimineto legal, y no se verifica.
 
 func ischeck(movimiento move, board [64]int8) int8 {
 	newboard := makemove(movimiento, board)
-	var wkingpos int8 = getwkingpos(newboard)
+	wkingpos, err := getwkingpos(newboard)
+	if err != nil {
+		return -1
+	}
 
 	var j int8 = wkingpos - 9
 	if j >= 0 && (newboard[j] == -4 || newboard[j] == -9) {
@@ -149,15 +154,15 @@ func ischeck(movimiento move, board [64]int8) int8 {
 	return 1
 }
 
-func getwkingpos(newboard [64]int8) int8 {
+func getwkingpos(newboard [64]int8) (int8, error) {
 	var i int8 = 0
 	for i < 64 {
 		if newboard[i] == int8(20) {
-			return i
+			return i, nil
 		}
 		i++
 	}
-	return -1
+	return -1, errors.New("There is no white king")
 }
 
 func makemove(movement move, board [64]int8) [64]int8 {
