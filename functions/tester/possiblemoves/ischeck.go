@@ -162,7 +162,7 @@ func getwkingpos(newboard [64]int8) (int8, error) {
 		}
 		i++
 	}
-	return -1, errors.New("There is no white king")
+	return -1, errors.New("there is no white king")
 }
 
 func makemove(movement move, board [64]int8) [64]int8 {
