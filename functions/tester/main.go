@@ -1,6 +1,9 @@
 package main
 
-import "tester/test/possiblemoves"
+import (
+	"fmt"
+	"tester/test/possiblemoves"
+)
 
 var board = [64]int8{-5, -3, -4, -9, -20, -4, -3, -5,
 	-1, -1, -1, -1, -1, 0, -1, -1,
@@ -15,5 +18,10 @@ var enpassant int8 = 29
 var possiblecastles = [4]uint8{1, 1, 0, 0}
 
 func main() {
-	possiblemoves.Printpossiblemoves(board, enpassant, possiblecastles)
+	var Moves []possiblemoves.Move = possiblemoves.SliceOfPossibleMoves(board, enpassant, possiblecastles)
+	i := 0
+	for i < len(Moves) {
+		fmt.Printf("[%d, %d]\n", Moves[i].Start, Moves[i].Finish)
+		i++
+	}
 }

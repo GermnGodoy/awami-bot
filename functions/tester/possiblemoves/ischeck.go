@@ -5,8 +5,8 @@ import "errors"
 //La funcion ischeck determina si el rey esta en jaque tras un movimiento.
 //Se asume que el input es un movimineto legal, y no se verifica.
 
-func ischeck(movimiento move, board [64]int8) int8 {
-	newboard := makemove(movimiento, board)
+func ischeck(movimiento Move, board [64]int8) int8 {
+	newboard := makeMove(movimiento, board)
 	wkingpos, err := getwkingpos(newboard)
 	if err != nil {
 		return -1
@@ -165,15 +165,15 @@ func getwkingpos(newboard [64]int8) (int8, error) {
 	return -1, errors.New("there is no white king")
 }
 
-func makemove(movement move, board [64]int8) [64]int8 {
+func makeMove(Movement Move, board [64]int8) [64]int8 {
 
-	switch movement.finish {
+	switch Movement.Finish {
 	case -1:
 		// En passant a la izquierda.
-		board[movement.start-9], board[movement.start-1], board[movement.start] = 1, 0, 0
+		board[Movement.Start-9], board[Movement.Start-1], board[Movement.Start] = 1, 0, 0
 	case -2:
 		// En passant a la derecha.
-		board[movement.start-7], board[movement.start+1], board[movement.start] = 1, 0, 0
+		board[Movement.Start-7], board[Movement.Start+1], board[Movement.Start] = 1, 0, 0
 	case -3:
 		// Enroque corto.
 		board[60], board[61], board[62], board[63] = 0, 5, 20, 0
@@ -181,8 +181,8 @@ func makemove(movement move, board [64]int8) [64]int8 {
 		//Enroque largo.
 		board[60], board[58], board[57], board[56] = 0, 5, 20, 0
 	default:
-		tmp := board[movement.start]
-		board[movement.start], board[movement.finish] = 0, tmp
+		tmp := board[Movement.Start]
+		board[Movement.Start], board[Movement.Finish] = 0, tmp
 	}
 
 	return board

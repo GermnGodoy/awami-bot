@@ -1,77 +1,50 @@
 package possiblemoves
 
-import "fmt"
-
-type move struct {
-	start  int8
-	finish int8
-}
-
-type node struct {
-	move move
-	next *node
+type Move struct {
+	Start  int8
+	Finish int8
 }
 
 //pointer to the linked list
 
-func Printpossiblemoves(board [64]int8, enpassant int8, possiblecastles [4]uint8) {
-	var listofmoves *node = nil
+func SliceOfPossibleMoves(board [64]int8, enpassant int8, possiblecastles [4]uint8) []Move {
+	var LegalMoves []Move
 
 	//chequeamos primero posibles ernoques.
-	castling(board, possiblecastles, &listofmoves)
+	LegalMoves = append(LegalMoves, castling(board, possiblecastles)...)
 
-	var i int8 = 0
-	for i < 64 {
+	var square int8 = 0
+	for square < 64 {
 		//printf("%i\n", board[i]);
-		for board[i] == 0 {
-			i++
+		for board[square] == 0 {
+			square++
 		}
-		switch board[i] {
+		switch board[square] {
 		//Caso peon blanco
 		case 1:
-			pawnmoves(i, board, enpassant, &listofmoves)
+			LegalMoves = append(LegalMoves, pawnMoves(square, board, enpassant)...)
 		// Caso caballo blanco.
 		case 3:
-			horsemoves(i, board, &listofmoves)
+			LegalMoves = append(LegalMoves, horseMoves(square, board)...)
 		// Caso alfil.
 		case 4:
-			bishopmoves(i, board, &listofmoves)
+			LegalMoves = append(LegalMoves, bishopMoves(square, board)...)
 		// Caso torre.
 		case 5:
-			rookmoves(i, board, &listofmoves)
+			LegalMoves = append(LegalMoves, rookMoves(square, board)...)
 			//El enroque se hace a aparte (al principio).
 		// Caso reina.
 		case 9:
-			bishopmoves(i, board, &listofmoves)
-			rookmoves(i, board, &listofmoves)
+			LegalMoves = append(LegalMoves, bishopMoves(square, board)...)
+			LegalMoves = append(LegalMoves, rookMoves(square, board)...)
 		// Caso rey.
 		case 20:
-			kingmoves(i, board, &listofmoves)
+			LegalMoves = append(LegalMoves, kingMoves(square, board)...)
 			//El enroque se hace a aparte (al principio).
 		default:
 		}
-		i++
+		square++
 	}
 
-	// ahora imprimimos los mivimientos obtenidos
-	ptr := listofmoves
-
-	if ptr == nil {
-		fmt.Printf("No legal moves.")
-		return
-	}
-
-	for ptr.next != nil {
-		fmt.Printf("[%d, %d]\n", ptr.move.start, ptr.move.finish)
-		ptr = ptr.next
-	}
-	fmt.Printf("[%d, %d]\n", ptr.move.start, ptr.move.finish)
-}
-
-func push(movimiento move, listofmovesptr **node) {
-	newelement := &node{
-		move: movimiento,
-		next: *listofmovesptr,
-	}
-	*listofmovesptr = newelement
+	return LegalMoves
 }
